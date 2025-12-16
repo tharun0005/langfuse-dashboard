@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Model Observability</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/notifications.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="{{ url_for('static', path='js/notifications.js') }}"></script>
+    <script defer src="{{ url_for('static', path='js/app.js') }}"></script>
+</head>
+<body>
+<div class="notification-container" id="notificationContainer"></div>
+
+<div class="container">
+    <h1>AI Model Observability - Dashboard View</h1>
+
+    <div class="controls">
+        <label for="limit">Limit:</label>
+        <input id="limit" type="number" min="1" max="200" value="50">
+        <button id="loadBtn">Load</button>
+    </div>
+
+    <div class="kpis">
+        <div class="kpi-card">
+            <div class="kpi-label">Total calls</div>
+            <div class="kpi-value" id="kpi-total">-</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Avg latency (ms)</div>
+            <div class="kpi-value" id="kpi-latency">-</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-label">Avg tokens</div>
+            <div class="kpi-value" id="kpi-tokens">-</div>
+        </div>
+    </div>
+
+    <div class="charts-grid hidden" id="chartsContainer">
+        <div class="chart-section">
+            <label for="yMetric">Daily trend</label>
+            <select id="yMetric">
+                <option value="avgLatency">Average latency per day</option>
+                <option value="totalCalls">Total calls per day</option>
+                <option value="totalTokens">Total tokens per day</option>
+            </select>
+            <div class="chart-wrapper">
+                <canvas id="latencyChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <label for="modelMetric">Model breakdown (day x model)</label>
+            <select id="modelMetric">
+                <option value="calls">Calls</option>
+                <option value="avgLatency">Avg latency (ms)</option>
+                <option value="tokens">Tokens</option>
+            </select>
+            <div class="chart-wrapper">
+                <canvas id="modelChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <table class="calls-table">
+        <thead>
+        <tr>
+            <th>Time</th>
+            <th>Model</th>
+            <th>Latency (ms)</th>
+            <th>Tokens</th>
+            <th>Input</th>
+            <th>Output</th>
+        </tr>
+        </thead>
+        <tbody id="callsBody"></tbody>
+    </table>
+
+    <div class="pagination hidden" id="paginationControls">
+        <button id="prevPage">Prev</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage">Next</button>
+    </div>
+</div>
+</body>
+</html>
